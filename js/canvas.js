@@ -22,7 +22,7 @@ export function createCanvas(canvas) {
 
   function drawGrid() {
     ctx.lineWidth = 1;
-    ctx.strokeStyle = 'rgba(125, 211, 252, 0.12)'; // 옅은 하늘색 격자
+    ctx.strokeStyle = 'rgba(120, 160, 255, 0.12)'; // 옅은 네온 격자
     ctx.beginPath();
     for (let i = -RANGE; i <= RANGE; i++) {
       ctx.moveTo(px(i), py(-RANGE)); ctx.lineTo(px(i), py(RANGE));
@@ -73,10 +73,10 @@ export function createCanvas(canvas) {
   function render(M) {
     ctx.clearRect(0, 0, W, H);
     drawGrid();
-    drawShape(IDENTITY, 'rgba(226, 240, 255, 0.35)', 'rgba(226, 240, 255, 0.05)'); // 원본(옅게)
-    drawShape(M, '#38bdf8', 'rgba(56, 189, 248, 0.18)', '#38bdf8');                 // 변환 결과 + 글로우
-    drawArrow(M.a, M.c, '#f472b6', 'i'); // 변환된 i = (a, c)
-    drawArrow(M.b, M.d, '#34d399', 'j'); // 변환된 j = (b, d)
+    drawShape(IDENTITY, 'rgba(226, 232, 255, 0.32)', 'rgba(226, 232, 255, 0.05)'); // 원본(옅게)
+    drawShape(M, '#22d3ee', 'rgba(34, 211, 238, 0.18)', '#22d3ee');                 // 변환 결과 + 네온 글로우
+    drawArrow(M.a, M.c, '#ff4da6', 'i'); // 변환된 i = (a, c) 네온 마젠타
+    drawArrow(M.b, M.d, '#4ade80', 'j'); // 변환된 j = (b, d) 네온 그린
   }
 
   return { render, resize };
