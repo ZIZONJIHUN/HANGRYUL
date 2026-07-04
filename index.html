@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>선형변환 시각화기 — 행렬로 보는 AI의 언어</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <p class="eyebrow">공통수학 1 · 행렬 · AI 웹 빌더 탐구</p>
+    <h1>행렬을 곱하면 도형이 어떻게 움직일까?</h1>
+    <p class="lead">AI는 세상을 <strong>행렬</strong>로 계산합니다. 신경망의 한 층도, 화면 속 그래픽 변환도
+      모두 <strong>선형변환</strong>이에요. 2×2 행렬을 직접 조절하며 그 원리를 눈으로 확인해봅시다.</p>
+  </header>
+
+  <main>
+    <!-- 시각화기 -->
+    <section class="card" id="visualizer">
+      <h2>① 선형변환 시각화기</h2>
+      <div class="viz-grid">
+        <div class="canvas-wrap">
+          <canvas id="grid" aria-label="선형변환 좌표평면"></canvas>
+        </div>
+        <div class="panel">
+          <div id="presets" class="presets">
+            <button class="chip" data-preset="identity">초기화</button>
+            <button class="chip" data-preset="rotate">회전 45°</button>
+            <button class="chip" data-preset="scale">확대 1.5×</button>
+            <button class="chip" data-preset="shear">전단</button>
+            <button class="chip" data-preset="reflect">x축 대칭</button>
+          </div>
+          <div class="sliders">
+            <label class="ctrl"><span>a</span><input type="range" id="sa" min="-2" max="2" step="0.1" value="1" /></label>
+            <label class="ctrl"><span>b</span><input type="range" id="sb" min="-2" max="2" step="0.1" value="0" /></label>
+            <label class="ctrl"><span>c</span><input type="range" id="sc" min="-2" max="2" step="0.1" value="0" /></label>
+            <label class="ctrl"><span>d</span><input type="range" id="sd" min="-2" max="2" step="0.1" value="1" /></label>
+          </div>
+          <dl class="readout">
+            <div><dt>변환 행렬 M</dt><dd id="outMatrix" class="mono">–</dd></div>
+            <div><dt>행렬식 det</dt><dd id="outDet">–</dd></div>
+            <div><dt>의미</dt><dd id="outDetMeaning" class="small">–</dd></div>
+          </dl>
+          <p class="legend"><span class="dot i"></span>변환된 i=(a,c) &nbsp; <span class="dot j"></span>변환된 j=(b,d)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 행렬곱 유도 -->
+    <section class="card" id="derivation">
+      <h2>② 행렬 × 벡터, 어떻게 계산될까?</h2>
+      <div class="step">
+        <h3>1. 성분 계산</h3>
+        <p>점 <b>(x, y)</b>에 행렬을 곱하면 각 성분은 이렇게 계산됩니다.</p>
+        <p class="mono center">M·(x, y) = ( a·x + b·y , &nbsp; c·x + d·y )</p>
+      </div>
+      <div class="step">
+        <h3>2. 예시로 확인</h3>
+        <p>M = [[2, 1], [0, 3]] 에 점 (1, 1)을 넣으면
+          <b>(2·1 + 1·1, 0·1 + 3·1) = (3, 3)</b> 으로 이동합니다.</p>
+      </div>
+      <div class="step">
+        <h3>3. 기저벡터의 이동으로 보기</h3>
+        <p>행렬의 <b>1열 (a, c)</b>는 <b>i=(1,0)</b>이 가는 곳,
+          <b>2열 (b, d)</b>는 <b>j=(0,1)</b>이 가는 곳입니다.
+          그래서 변환은 "새 기저가 만드는 격자"에 도형을 얹는 것과 같아요.</p>
+      </div>
+      <div class="step">
+        <h3>4. 순서가 중요하다 — 곱셈의 비교환성</h3>
+        <p>두 변환을 잇는 것은 <b>행렬의 곱</b>입니다. 그런데 회전→전단과 전단→회전은
+          결과가 다릅니다(AB ≠ BA). 위 프리셋을 순서대로 눌러 직접 비교해보세요.</p>
+      </div>
+    </section>
+
+    <!-- AI 탐구 결론 -->
+    <section class="card" id="conclusion">
+      <h2>③ 탐구 결론 — 행렬은 AI의 언어</h2>
+      <ul class="bullets">
+        <li><b>신경망:</b> 신경망의 한 층은 <b>출력 = 가중치행렬 × 입력벡터</b>입니다.
+          우리가 만진 M·(x,y)가 바로 그 연산의 축소판이에요.</li>
+        <li><b>컴퓨터그래픽스:</b> 게임·웹의 도형 회전·확대·기울임은 전부 이 2×2(3D는 3×3·4×4) 행렬 변환입니다.</li>
+        <li><b>행렬식의 의미:</b> det는 넓이가 몇 배가 되는지, 음수면 뒤집힘, 0이면 한 직선으로 붕괴됨을 뜻합니다.
+          AI에서 정보가 눌려 사라지는지(det≈0) 판단하는 직관과 통합니다.</li>
+        <li><b>한계와 확장:</b> 실제 AI·그래픽스는 수십~수천 차원의 큰 행렬을 다룹니다.
+          2×2에서 익힌 원리가 <b>고차원 선형대수</b>로 그대로 확장됩니다.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>공통수학 1 · 행렬 · 고1 세특 탐구 프로젝트</p>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
