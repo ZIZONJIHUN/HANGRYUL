@@ -7,7 +7,15 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="hero">
+  <!-- 배경 글래스 블롭 -->
+  <div class="bg" aria-hidden="true">
+    <span class="blob b1"></span>
+    <span class="blob b2"></span>
+    <span class="blob b3"></span>
+    <span class="grid-overlay"></span>
+  </div>
+
+  <header class="hero reveal">
     <p class="eyebrow">공통수학 1 · 행렬 · AI 웹 빌더 탐구</p>
     <h1>행렬을 곱하면 도형이 어떻게 움직일까?</h1>
     <p class="lead">AI는 세상을 <strong>행렬</strong>로 계산합니다. 신경망의 한 층도, 화면 속 그래픽 변환도
@@ -16,7 +24,7 @@
 
   <main>
     <!-- 시각화기 -->
-    <section class="card" id="visualizer">
+    <section class="card reveal" id="visualizer">
       <h2>① 선형변환 시각화기</h2>
       <div class="viz-grid">
         <div class="canvas-wrap">
@@ -47,7 +55,7 @@
     </section>
 
     <!-- 행렬곱 유도 -->
-    <section class="card" id="derivation">
+    <section class="card reveal" id="derivation">
       <h2>② 행렬 × 벡터, 어떻게 계산될까?</h2>
       <div class="step">
         <h3>1. 성분 계산</h3>
@@ -73,7 +81,7 @@
     </section>
 
     <!-- AI 탐구 결론 -->
-    <section class="card" id="conclusion">
+    <section class="card reveal" id="conclusion">
       <h2>③ 탐구 결론 — 행렬은 AI의 언어</h2>
       <ul class="bullets">
         <li><b>신경망:</b> 신경망의 한 층은 <b>출력 = 가중치행렬 × 입력벡터</b>입니다.
@@ -87,10 +95,11 @@
     </section>
   </main>
 
-  <footer class="foot">
+  <footer class="foot reveal">
     <p>공통수학 1 · 행렬 · 고1 세특 탐구 프로젝트</p>
   </footer>
 
   <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/effects.js"></script>
 </body>
 </html>

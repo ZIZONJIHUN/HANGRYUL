@@ -22,14 +22,14 @@ export function createCanvas(canvas) {
 
   function drawGrid() {
     ctx.lineWidth = 1;
-    ctx.strokeStyle = '#e5e7eb';
+    ctx.strokeStyle = 'rgba(125, 211, 252, 0.12)'; // 옅은 하늘색 격자
     ctx.beginPath();
     for (let i = -RANGE; i <= RANGE; i++) {
       ctx.moveTo(px(i), py(-RANGE)); ctx.lineTo(px(i), py(RANGE));
       ctx.moveTo(px(-RANGE), py(i)); ctx.lineTo(px(RANGE), py(i));
     }
     ctx.stroke();
-    ctx.strokeStyle = '#9ca3af';
+    ctx.strokeStyle = 'rgba(226, 240, 255, 0.35)'; // 축
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.moveTo(px(-RANGE), py(0)); ctx.lineTo(px(RANGE), py(0));
@@ -38,9 +38,10 @@ export function createCanvas(canvas) {
   }
 
   // 단위정사각형 (0,0)-(1,0)-(1,1)-(0,1) 을 M으로 변환해 그린다
-  function drawShape(M, stroke, fill) {
+  function drawShape(M, stroke, fill, glow) {
     const pts = [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 1, y: 1 }, { x: 0, y: 1 }]
       .map((p) => apply(M, p.x, p.y));
+    if (glow) { ctx.shadowColor = glow; ctx.shadowBlur = 18; }
     ctx.beginPath();
     pts.forEach((p, i) => {
       const X = px(p.x), Y = py(p.y);
@@ -48,31 +49,34 @@ export function createCanvas(canvas) {
     });
     ctx.closePath();
     ctx.fillStyle = fill; ctx.fill();
-    ctx.strokeStyle = stroke; ctx.lineWidth = 2; ctx.stroke();
+    ctx.strokeStyle = stroke; ctx.lineWidth = 2.5; ctx.stroke();
+    ctx.shadowBlur = 0; ctx.shadowColor = 'transparent';
   }
 
   function drawArrow(x, y, color, label) {
     const x0 = px(0), y0 = py(0), x1 = px(x), y1 = py(y);
-    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 2.5;
+    ctx.shadowColor = color; ctx.shadowBlur = 12;
+    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 3;
     ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke();
     const ang = Math.atan2(y1 - y0, x1 - x0);
-    const h = 10;
+    const h = 11;
     ctx.beginPath();
     ctx.moveTo(x1, y1);
     ctx.lineTo(x1 - h * Math.cos(ang - 0.4), y1 - h * Math.sin(ang - 0.4));
     ctx.lineTo(x1 - h * Math.cos(ang + 0.4), y1 - h * Math.sin(ang + 0.4));
     ctx.closePath(); ctx.fill();
-    ctx.font = 'bold 14px sans-serif';
-    ctx.fillText(label, x1 + 6, y1 - 6);
+    ctx.shadowBlur = 0; ctx.shadowColor = 'transparent';
+    ctx.font = 'bold 15px system-ui, sans-serif';
+    ctx.fillText(label, x1 + 7, y1 - 7);
   }
 
   function render(M) {
     ctx.clearRect(0, 0, W, H);
     drawGrid();
-    drawShape(IDENTITY, '#cbd5e1', 'rgba(203,213,225,0.25)'); // 원본(옅게)
-    drawShape(M, '#2563eb', 'rgba(37,99,235,0.20)');          // 변환 결과
-    drawArrow(M.a, M.c, '#ef4444', 'i'); // 변환된 i = (a, c)
-    drawArrow(M.b, M.d, '#16a34a', 'j'); // 변환된 j = (b, d)
+    drawShape(IDENTITY, 'rgba(226, 240, 255, 0.35)', 'rgba(226, 240, 255, 0.05)'); // 원본(옅게)
+    drawShape(M, '#38bdf8', 'rgba(56, 189, 248, 0.18)', '#38bdf8');                 // 변환 결과 + 글로우
+    drawArrow(M.a, M.c, '#f472b6', 'i'); // 변환된 i = (a, c)
+    drawArrow(M.b, M.d, '#34d399', 'j'); // 변환된 j = (b, d)
   }
 
   return { render, resize };
