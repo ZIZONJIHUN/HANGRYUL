@@ -1,0 +1,10 @@
+{
+  "name": "linear-transformation-visualizer",
+  "version": "1.0.0",
+  "description": "선형변환 시각화기 (공통수학1 · 행렬 · AI 연계)",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node --test js/*.test.mjs"
+  }
+}
